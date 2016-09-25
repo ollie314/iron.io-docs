@@ -21,11 +21,15 @@ breadcrumbs:
 <h2 id="overview">Overview</h2>
 
 A dead letter queue is a queue that other (source) queues can target to send
-messages that for some reason could not be successfully processed. Messages
-that have exceeded the allowed number of time outs on the source queue are
+messages that for some reason could not be successfully processed. Dead letter
+queues can only be used as a target from a pull queue. Messages that have
+exceeded the allowed number of time outs on the source queue are
 placed onto the dead letter queue. Messages on the dead letter queue can then
 be processed again or analyzed to try to determine why they weren't
 successfully processed in the first place, without having to throw them away.
+
+A dead letter queue <b>cannot be specified on a push queue</b>, for
+something similar, see [error queues](/reference/push_queues#error_queues).
 
 <h2 id="creating">Creating a Dead Letter Queue</h2>
 
@@ -42,8 +46,7 @@ PUT /3/projects/:project/queues/:queue
 queue, otherwise the request will error unless the queue already has a dead
 letter queue defined on it. `"max_reservations"` can be specified if desired
 to be a value `1 <= max_reservations <= 1000`, and will default to 10 if
-omitted. A dead letter queue cannot be specified on a push queue, for
-something similar, see [error queues](/reference/push_queues#error_queues).
+omitted. 
 If a queue with the given dead letter queue name already exists, it's used as
 is. Otherwise, a new queue is automatically created with the default pull
 queue settings.
